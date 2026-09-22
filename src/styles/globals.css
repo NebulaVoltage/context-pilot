@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --graphite-50: #f7f7f8;
+  --graphite-100: #efeff1;
+  --graphite-200: #dcdce2;
+  --graphite-300: #c0c0c9;
+  --graphite-400: #9b9ba8;
+  --graphite-500: #7a7a88;
+  --graphite-600: #35354a;
+  --graphite-700: #252530;
+  --graphite-800: #1a1a1f;
+  --graphite-900: #111114;
+  --graphite-950: #090B10;
+  
+  --cobalt: #4267FF;
+  --violet: #8A63FF;
+  --mint: #43D3A1;
+  --amber: #F1B55A;
+  --coral: #FF6363;
+  
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 100%;
+}
+
+body {
+  background-color: #090B10;
+  color: #F4F1EA;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  position: relative;
+}
+
+::selection {
+  background-color: rgba(66, 103, 255, 0.35);
+  color: #FFFFFF;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #090B10;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1E2333;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4267FF;
+}
+
+.glass {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  background-color: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+}
