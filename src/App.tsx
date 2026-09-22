@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { CosmicAtmosphere } from '@/components/effects/CosmicAtmosphere';
 import { CustomCursor } from '@/components/cursor/CustomCursor';
@@ -8,24 +8,38 @@ import { SystemStatusHUD } from '@/components/ui/SystemStatusHUD';
 import { PageTransition } from '@/components/ui/PageTransition';
 import PresentationMode from '@/components/presentation/PresentationMode';
 
-// Route Pages
-import HomePage from '@/pages/HomePage';
-import SystemPage from '@/pages/SystemPage';
-import DemoPage from '@/pages/DemoPage';
-import HardwarePage from '@/pages/HardwarePage';
-import WorkflowsPage from '@/pages/WorkflowsPage';
-import TrustPage from '@/pages/TrustPage';
-import PrivacyPage from '@/pages/PrivacyPage';
-import AboutPage from '@/pages/AboutPage';
+// Route Pages with Dynamic Code-Splitting
+const HomePage = lazy(() => import('@/pages/HomePage'));
+const SystemPage = lazy(() => import('@/pages/SystemPage'));
+const DemoPage = lazy(() => import('@/pages/DemoPage'));
+const HardwarePage = lazy(() => import('@/pages/HardwarePage'));
+const WorkflowsPage = lazy(() => import('@/pages/WorkflowsPage'));
+const TrustPage = lazy(() => import('@/pages/TrustPage'));
+const PrivacyPage = lazy(() => import('@/pages/PrivacyPage'));
+const AboutPage = lazy(() => import('@/pages/AboutPage'));
+
+// Dark Branded Route Fallback Loader (Instant & Zero Layout Shift)
+function RouteFallback() {
+  return (
+    <div className="w-full min-h-screen bg-[#07080C] text-white flex items-center justify-center pt-20 select-none">
+      <div className="flex flex-col items-center gap-3">
+        <div className="w-6 h-6 border-2 border-cobalt border-t-transparent rounded-full animate-spin" />
+        <div className="text-[10px] font-mono tracking-[0.25em] text-white/50 uppercase">
+          CONTEXTPILOT
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function App() {
   return (
     <BrowserRouter>
       <div className="relative min-h-screen bg-[#07080C] text-white selection:bg-cobalt/30 selection:text-white font-sans antialiased">
-        {/* Subtle Atmospheric Depth (Soft light falloff, minimal stars, fine topology) */}
+        {/* Subtle Atmospheric Depth */}
         <CosmicAtmosphere />
 
-        {/* Cinematic Reveal Sequence (Instant dismiss on user scroll/key) */}
+        {/* Cinematic Reveal Sequence */}
         <CinematicIntro />
 
         {/* Global UI & Navigation Layer */}
@@ -42,20 +56,22 @@ function App() {
           }}
         />
 
-        {/* Multi-Page Route Outlet */}
+        {/* Multi-Page Route Outlet with Suspense */}
         <main className="relative z-10 w-full">
           <PageTransition>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/system" element={<SystemPage />} />
-              <Route path="/demo" element={<DemoPage />} />
-              <Route path="/hardware" element={<HardwarePage />} />
-              <Route path="/workflows" element={<WorkflowsPage />} />
-              <Route path="/trust" element={<TrustPage />} />
-              <Route path="/privacy" element={<PrivacyPage />} />
-              <Route path="/about" element={<AboutPage />} />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+            <Suspense fallback={<RouteFallback />}>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
+                <Route path="/system" element={<SystemPage />} />
+                <Route path="/demo" element={<DemoPage />} />
+                <Route path="/hardware" element={<HardwarePage />} />
+                <Route path="/workflows" element={<WorkflowsPage />} />
+                <Route path="/trust" element={<TrustPage />} />
+                <Route path="/privacy" element={<PrivacyPage />} />
+                <Route path="/about" element={<AboutPage />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </Suspense>
           </PageTransition>
         </main>
       </div>

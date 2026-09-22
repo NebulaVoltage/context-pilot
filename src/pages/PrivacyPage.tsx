@@ -82,14 +82,14 @@ export const PrivacyPage: React.FC = () => {
           </div>
 
           {/* ContextPilot Architecture (Local First) */}
-          <div className="p-8 sm:p-10 rounded-3xl border border-mint/40 bg-white shadow-xl flex flex-col justify-between">
+          <div className="p-8 sm:p-10 rounded-3xl border border-emerald-300 bg-white shadow-xl flex flex-col justify-between">
             <div>
-              <div className="flex items-center justify-between pb-6 mb-8 border-b border-mint/30">
-                <div className="flex items-center gap-2.5 text-mint font-display text-sm font-bold tracking-wider uppercase">
+              <div className="flex items-center justify-between pb-6 mb-8 border-b border-emerald-200">
+                <div className="flex items-center gap-2.5 text-emerald-800 font-display text-sm font-bold tracking-wider uppercase">
                   <Smartphone className="w-5 h-5" />
                   <span>CONTEXTPILOT ON-DEVICE</span>
                 </div>
-                <span className="text-[10px] font-mono px-2.5 py-1 rounded bg-mint/15 text-mint font-bold">
+                <span className="text-[10px] font-mono px-2.5 py-1 rounded bg-emerald-100 text-emerald-800 font-bold">
                   LOCAL-FIRST INFERENCE
                 </span>
               </div>
@@ -98,23 +98,23 @@ export const PrivacyPage: React.FC = () => {
                 <div className="w-full p-4 border border-[#DED8CB] rounded-2xl bg-[#FAF8F3] text-center font-medium">
                   WORK CONTEXT (HOST PC)
                 </div>
-                <div className="text-mint font-bold">↓</div>
-                <div className="w-full p-4 border border-mint/40 rounded-2xl bg-mint/15 text-center text-mint font-bold flex items-center justify-center gap-2 shadow-sm">
+                <div className="text-emerald-700 font-bold">↓</div>
+                <div className="w-full p-4 border border-emerald-300 rounded-2xl bg-emerald-50 text-center text-emerald-800 font-bold flex items-center justify-center gap-2 shadow-sm">
                   <Lock className="w-4 h-4" />
                   OFFICE KIT BUS &bull; LOCAL NPU SILICON
                 </div>
-                <div className="text-mint font-bold">↓</div>
+                <div className="text-emerald-700 font-bold">↓</div>
                 <div className="w-full p-4 border border-[#DED8CB] rounded-2xl bg-[#FAF8F3] text-center font-medium">
                   ENCRYPTED CONTEXT CAPSULE
                 </div>
-                <div className="text-mint font-bold">↓</div>
+                <div className="text-emerald-700 font-bold">↓</div>
                 <div className="w-full p-4 border border-[#DED8CB] rounded-2xl bg-[#FAF8F3] text-center font-medium">
                   VERIFIED LOCAL TARGET EXECUTION
                 </div>
               </div>
             </div>
 
-            <div className="mt-8 pt-6 border-t border-mint/30 text-center text-xs font-mono text-mint font-bold flex items-center justify-center gap-2">
+            <div className="mt-8 pt-6 border-t border-emerald-200 text-center text-xs font-mono text-emerald-800 font-bold flex items-center justify-center gap-2">
               <ShieldCheck className="w-4 h-4" />
               DESIGNED FOR PHYSICAL ENCLAVE ISOLATION
             </div>
