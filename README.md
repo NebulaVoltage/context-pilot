@@ -16,7 +16,7 @@ Context → Intent → Action
 [![Vite](https://img.shields.io/badge/Vite_5-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS_3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 
-[Live Application](https://context-pilot.vercel.app) • [GitHub Repository](https://github.com/NebulaVoltage/context-pilot) • [System Architecture](/system) • [Interactive Demo](/demo)
+[Live Application](https://context-pilot-seven.vercel.app) • [GitHub Repository](https://github.com/NebulaVoltage/context-pilot) • [System Architecture](/system) • [Interactive Demo](/demo)
 
 ---
 
@@ -156,7 +156,7 @@ Without requiring the user to type a single character:
 
 ## Interactive Product Simulation
 
-ContextPilot features an interactive 12-stage local AI execution simulation accessible directly via the [/demo](https://context-pilot.vercel.app/demo) route:
+ContextPilot features an interactive 12-stage local AI execution simulation accessible directly via the [/demo](https://context-pilot-seven.vercel.app/demo) route:
 
 ```mermaid
 flowchart LR
@@ -266,4 +266,4 @@ context-pilot/
 - **Hackathon**: iQOO AI Hackathon
 - **Track**: Open Innovation
 - **Repository**: [https://github.com/NebulaVoltage/context-pilot](https://github.com/NebulaVoltage/context-pilot)
-- **Live Demo**: [https://context-pilot.vercel.app](https://context-pilot.vercel.app)
+- **Live Demo**: [https://context-pilot-seven.vercel.app](https://context-pilot-seven.vercel.app)
