@@ -20,7 +20,9 @@ interface DataPulse {
 
 export const CosmicAtmosphere: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { state, confidence, getTrustPolicy } = useSimulation();
+  const state = useSimulation((s) => s.state);
+  const confidence = useSimulation((s) => s.confidence);
+  const getTrustPolicy = useSimulation((s) => s.getTrustPolicy);
   const policy = getTrustPolicy(confidence);
 
   const stateRef = useRef({ state, policy });

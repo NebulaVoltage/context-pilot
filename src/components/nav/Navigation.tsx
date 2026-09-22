@@ -14,10 +14,55 @@ const NAV_ITEMS = [
   { label: 'ABOUT', path: '/about' },
 ];
 
+const prefetchedRoutes = new Set<string>();
+
+function lowPriorityPrefetch(path: string) {
+  if (prefetchedRoutes.has(path)) return;
+  prefetchedRoutes.add(path);
+
+  const prefetchTask = () => {
+    switch (path) {
+      case '/system':
+        import('@/pages/SystemPage');
+        break;
+      case '/demo':
+        import('@/pages/DemoPage');
+        break;
+      case '/hardware':
+        import('@/pages/HardwarePage');
+        break;
+      case '/workflows':
+        import('@/pages/WorkflowsPage');
+        break;
+      case '/trust':
+        import('@/pages/TrustPage');
+        break;
+      case '/privacy':
+        import('@/pages/PrivacyPage');
+        break;
+      case '/about':
+        import('@/pages/AboutPage');
+        break;
+      default:
+        break;
+    }
+  };
+
+  if ('requestIdleCallback' in window) {
+    (window as unknown as { requestIdleCallback: (cb: () => void) => void }).requestIdleCallback(prefetchTask);
+  } else {
+    setTimeout(prefetchTask, 100);
+  }
+}
+
 export const Navigation: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { presentationMode, audioEnabled, toggleAudio, setPresentationMode } = useSimulation();
+  const presentationMode = useSimulation((s) => s.presentationMode);
+  const audioEnabled = useSimulation((s) => s.audioEnabled);
+  const toggleAudio = useSimulation((s) => s.toggleAudio);
+  const setPresentationMode = useSimulation((s) => s.setPresentationMode);
+
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -89,6 +134,7 @@ export const Navigation: React.FC = () => {
                     <Link
                       key={item.label}
                       to={item.path}
+                      onMouseEnter={() => lowPriorityPrefetch(item.path)}
                       className={`text-[11px] font-display tracking-widest uppercase transition-all duration-200 relative py-1 ${
                         isLightRoute
                           ? isActive
@@ -143,6 +189,7 @@ export const Navigation: React.FC = () => {
                 {/* [ RUN DEMO → ] Primary CTA (Desktop & Tablet) */}
                 <button
                   onClick={handleRunDemo}
+                  onMouseEnter={() => lowPriorityPrefetch('/demo')}
                   className={`hidden sm:flex group items-center gap-1.5 text-[11px] font-display font-bold tracking-wider uppercase px-4 py-2 rounded-full transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] ${
                     isLightRoute
                       ? 'bg-[#07080C] text-white hover:bg-[#141722] shadow-sm'
@@ -187,6 +234,7 @@ export const Navigation: React.FC = () => {
                         key={item.label}
                         to={item.path}
                         onClick={() => setMobileMenuOpen(false)}
+                        onMouseEnter={() => lowPriorityPrefetch(item.path)}
                         className={`py-2.5 px-4 rounded-xl transition-all ${
                           isActive
                             ? 'bg-cobalt text-white font-bold'
@@ -201,6 +249,7 @@ export const Navigation: React.FC = () => {
 
                 <button
                   onClick={handleRunDemo}
+                  onMouseEnter={() => lowPriorityPrefetch('/demo')}
                   className="w-full py-3 rounded-xl bg-cobalt hover:bg-cobalt-hover text-white font-display text-xs font-bold tracking-wider uppercase flex items-center justify-center gap-2 shadow-lg"
                 >
                   <span>RUN LIVE DEMO</span>

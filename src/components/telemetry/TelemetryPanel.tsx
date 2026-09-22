@@ -4,8 +4,8 @@ import TelemetryValue from '@/components/ui/TelemetryValue';
 import GlassPanel from '@/components/ui/GlassPanel';
 import { Activity } from 'lucide-react';
 
-export default function TelemetryPanel() {
-  const { telemetry } = useSimulation();
+export const TelemetryPanel: React.FC = React.memo(function TelemetryPanel() {
+  const telemetry = useSimulation((s) => s.telemetry);
 
   return (
     <GlassPanel className="p-4 flex flex-col gap-4">
@@ -52,4 +52,6 @@ export default function TelemetryPanel() {
       </div>
     </GlassPanel>
   );
-}
+});
+
+export default TelemetryPanel;

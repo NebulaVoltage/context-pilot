@@ -1,7 +1,8 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useRef } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { AdaptiveDpr, ContactShadows } from '@react-three/drei';
 import * as THREE from 'three';
+import { useInView } from '@/hooks/useInView';
 import CameraController from './CameraController';
 import BackgroundEnvironment from './BackgroundEnvironment';
 import LaptopModel from './LaptopModel';
@@ -30,12 +31,15 @@ interface DeviceSceneProps {
 }
 
 export default function DeviceScene({ className = 'w-full h-full' }: DeviceSceneProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { isInView } = useInView(containerRef, { rootMargin: '100px', threshold: 0 });
+
   return (
-    <div className={`relative ${className} bg-[#090B10]`}>
+    <div ref={containerRef} className={`relative ${className} bg-[#090B10]`}>
       <Suspense fallback={<LoadingFallback />}>
         <Canvas
           shadows
-          dpr={[1, 2]}
+          dpr={[1, Math.min(window.devicePixelRatio || 1.5, 2)]}
           gl={{
             antialias: true,
             alpha: true,
@@ -43,7 +47,7 @@ export default function DeviceScene({ className = 'w-full h-full' }: DeviceScene
             toneMapping: THREE.ACESFilmicToneMapping,
             toneMappingExposure: 1.2,
           }}
-          frameloop="always"
+          frameloop={isInView ? 'always' : 'never'}
         >
           <fog attach="fog" args={['#090B10', 8, 30]} />
           <CameraController />

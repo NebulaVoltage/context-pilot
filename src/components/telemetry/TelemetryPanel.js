@@ -1,9 +1,0 @@
-import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
-import { useSimulation } from '@/store/simulation';
-import TelemetryValue from '@/components/ui/TelemetryValue';
-import GlassPanel from '@/components/ui/GlassPanel';
-import { Activity } from 'lucide-react';
-export default function TelemetryPanel() {
-    const { telemetry } = useSimulation();
-    return (_jsxs(GlassPanel, { className: "p-4 flex flex-col gap-4", children: [_jsxs("div", { className: "flex items-center gap-2 mb-2 pb-2 border-b border-gray-800", children: [_jsx(Activity, { className: "w-4 h-4 text-cyan-400" }), _jsx("h4", { className: "text-xs font-mono font-bold text-gray-300 tracking-wider", children: "SYSTEM TELEMETRY" })] }), _jsxs("div", { className: "flex flex-col gap-5", children: [_jsx(TelemetryValue, { label: "NPU UTILIZATION", value: telemetry.npuUtilization, unit: "%", precision: 0 }), _jsx(TelemetryValue, { label: "INFERENCE LATENCY", value: telemetry.inferenceLatency, unit: "ms", precision: 0 }), _jsx(TelemetryValue, { label: "CONTEXT LENGTH", value: telemetry?.contextLength ?? 0, unit: "tkns", precision: 0 }), _jsx(TelemetryValue, { label: "MEMORY USAGE", value: telemetry?.memoryUsage ?? 0, unit: "MB", precision: 0 }), _jsxs("div", { className: "flex flex-col gap-1", children: [_jsx("span", { className: "text-[10px] text-gray-500 font-mono", children: "THERMAL STATE" }), _jsx("span", { className: `text-sm font-mono font-bold ${(telemetry?.thermalState || '').toLowerCase() === 'nominal' ? 'text-green-400' : 'text-amber-400'}`, children: (telemetry?.thermalState || 'nominal').toUpperCase() })] })] }), _jsx("div", { className: "mt-4 pt-4 border-t border-gray-800 text-center", children: _jsx("span", { className: "text-[9px] text-gray-600 font-mono tracking-widest", children: "DEMO VALUES" }) })] }));
-}

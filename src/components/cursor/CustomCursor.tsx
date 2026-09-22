@@ -9,6 +9,8 @@ export const CustomCursor: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
+  const currentModeRef = useRef<CursorMode>('default');
+  const lastTargetRef = useRef<EventTarget | null>(null);
 
   useEffect(() => {
     // Hide on touch devices or if reduced motion is requested
@@ -32,22 +34,30 @@ export const CustomCursor: React.FC = () => {
         dotRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
       }
 
+      // Avoid re-evaluating DOM query if hovered element has not changed
+      if (e.target === lastTargetRef.current) return;
+      lastTargetRef.current = e.target;
+
       const target = e.target as HTMLElement;
       if (!target) return;
 
+      let nextMode: CursorMode = 'default';
       if (target.closest('[data-cursor="explore"]') || target.closest('canvas')) {
-        setMode('phone');
+        nextMode = 'phone';
       } else if (target.closest('[data-cursor="node"]')) {
-        setMode('node');
+        nextMode = 'node';
       } else if (
         target.closest('button') ||
         target.closest('a') ||
         target.closest('[role="button"]') ||
         target.closest('[data-interactive="true"]')
       ) {
-        setMode('interactive');
-      } else {
-        setMode('default');
+        nextMode = 'interactive';
+      }
+
+      if (nextMode !== currentModeRef.current) {
+        currentModeRef.current = nextMode;
+        setMode(nextMode);
       }
     };
 

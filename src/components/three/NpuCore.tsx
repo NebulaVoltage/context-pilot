@@ -19,7 +19,7 @@ export const NpuCore: React.FC = () => {
   // Node positions on a sphere
   const nodePositions = useMemo(() => {
     const pos = [];
-    const phi = Math.PI * (3 - Math.sqrt(5)); // Golden angle
+    const phi = Math.PI * (3 - Math.sqrt(5));
     for (let i = 0; i < NUM_NODES; i++) {
       const y = 1 - (i / (NUM_NODES - 1)) * 2;
       const radius = Math.sqrt(1 - y * y) * 1.4;
@@ -44,7 +44,6 @@ export const NpuCore: React.FC = () => {
     const simState = useSimulation.getState().state;
     const time = state.clock.getElapsedTime();
 
-    // Determine state multipliers
     let speedMult = 1;
     let nodeBrightness = 0.2;
     let lightIntensity = 0.5;
@@ -89,7 +88,6 @@ export const NpuCore: React.FC = () => {
     if (nodesRef.current) {
       nodePositions.forEach((pos, i) => {
         dummy.position.copy(pos);
-        // Node pulse based on inference state
         let scale = 1;
         if (simState === 'inference') {
           const wave = Math.sin(time * 5 + i * 0.5) * 0.5 + 0.5;
@@ -116,10 +114,8 @@ export const NpuCore: React.FC = () => {
         let r = data.radius;
         
         if (simState === 'capsule') {
-          // Converge to center
           r = lerp(r, 0.2, 0.05);
         } else {
-          // Normal orbit
           r = data.radius + Math.sin(time * 2 + data.phase) * 0.2;
         }
 
@@ -158,10 +154,8 @@ export const NpuCore: React.FC = () => {
 
   return (
     <group position={[2.5, 0, -1.5]}>
-      {/* Central light */}
       <pointLight ref={lightRef} color="#00e5ff" intensity={0.5} distance={5} />
 
-      {/* Rings */}
       <group ref={ringsRef}>
         <mesh>
           <torusGeometry args={[0.8, 0.005, 16, 64]} />
@@ -177,31 +171,26 @@ export const NpuCore: React.FC = () => {
         </mesh>
       </group>
 
-      {/* Nodes */}
       <instancedMesh ref={nodesRef} args={[undefined, undefined, NUM_NODES]}>
         <sphereGeometry args={[0.03, 16, 16]} />
         <meshBasicMaterial color="#00e5ff" transparent opacity={0.2} />
       </instancedMesh>
 
-      {/* Particles */}
       <instancedMesh ref={particlesRef} args={[undefined, undefined, NUM_PARTICLES]}>
         <sphereGeometry args={[0.01, 8, 8]} />
         <meshBasicMaterial color="#00e5ff" transparent opacity={0.6} />
       </instancedMesh>
 
-      {/* Pulse */}
       <mesh ref={pulseRef} visible={false}>
         <ringGeometry args={[0.8, 0.85, 32]} />
         <meshBasicMaterial color="#00e5ff" transparent opacity={0} side={THREE.DoubleSide} />
       </mesh>
 
-      {/* Grid lines */}
       <mesh position={[0, 0, -1]}>
         <planeGeometry args={[4, 4, 10, 10]} />
         <meshBasicMaterial color="#ffffff" transparent opacity={0.03} wireframe />
       </mesh>
 
-      {/* Labels */}
       <Html position={[0, 2.2, 0]} center style={{ pointerEvents: 'none' }}>
         <div className="flex flex-col items-center">
           <div className="text-xs text-cyan-400 font-mono tracking-[0.3em] whitespace-nowrap">
@@ -215,7 +204,7 @@ export const NpuCore: React.FC = () => {
 };
 
 const NpuTelemetry: React.FC = () => {
-  const { state } = useSimulation();
+  const state = useSimulation((s) => s.state);
   const [data, setData] = React.useState({ conf: '---', ops: '---' });
   
   React.useEffect(() => {

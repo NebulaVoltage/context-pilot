@@ -11,8 +11,18 @@ const CURVE_POINTS = 50;
 export const OfficeKitBridge: React.FC = () => {
   const particlesRef = useRef<THREE.InstancedMesh>(null);
   const ringRef = useRef<THREE.Mesh>(null);
-  const { officeKitConnected, toggleOfficeKit, state } = useSimulation();
+
+  const officeKitConnected = useSimulation((s) => s.officeKitConnected);
+  const toggleOfficeKit = useSimulation((s) => s.toggleOfficeKit);
+  const state = useSimulation((s) => s.state);
   
+  // Reusable static color and vector objects to prevent memory allocation in useFrame
+  const tempVector = useMemo(() => new THREE.Vector3(), []);
+  const tempPulseVector = useMemo(() => new THREE.Vector3(), []);
+  const colorCobalt = useMemo(() => new THREE.Color('#3867FF'), []);
+  const colorMint = useMemo(() => new THREE.Color('#00E5FF'), []);
+  const colorDim = useMemo(() => new THREE.Color('#161822'), []);
+
   // Define bezier curves from laptop (x:-1.5) to phone (x:1.5)
   const curves = useMemo(() => {
     return [
@@ -52,12 +62,12 @@ export const OfficeKitBridge: React.FC = () => {
 
   const dummy = useMemo(() => new THREE.Object3D(), []);
 
-  useFrame((stateThree, delta) => {
-    const { state: simState, officeKitConnected: isConnected, confidence } = useSimulation.getState();
+  useFrame((stateThree) => {
+    const { state: simState, officeKitConnected: isConnected } = useSimulation.getState();
     
     // Determine particle behavior based on simulation state
     let targetSpeedMulti = 1;
-    let direction = 1; // 1 for left to right (laptop to phone), -1 for right to left
+    let direction = 1;
     let active = false;
 
     if (!isConnected) {
@@ -83,10 +93,6 @@ export const OfficeKitBridge: React.FC = () => {
     }
 
     if (particlesRef.current) {
-      const colorCobalt = new THREE.Color('#3867FF');
-      const colorMint = new THREE.Color('#00E5FF');
-      const colorDim = new THREE.Color('#161822');
-
       const activeColor = simState === 'verification' || simState === 'complete' ? colorMint : colorCobalt;
 
       for (let i = 0; i < NUM_PARTICLES; i++) {
@@ -98,8 +104,8 @@ export const OfficeKitBridge: React.FC = () => {
         }
 
         const curve = curves[p.curveIndex];
-        const point = curve.getPoint(p.progress);
-        dummy.position.copy(point);
+        curve.getPoint(p.progress, tempVector);
+        dummy.position.copy(tempVector);
         
         if (p.type === 'organic' && active) {
           dummy.position.y += Math.sin(p.progress * Math.PI * 4) * 0.02;
@@ -125,8 +131,8 @@ export const OfficeKitBridge: React.FC = () => {
         const time = stateThree.clock.getElapsedTime();
         const t = (time * 1.5) % 1;
         const ringProg = direction === 1 ? t : (1 - t);
-        const centerPoint = curves[0].getPoint(ringProg);
-        ringRef.current.position.copy(centerPoint);
+        curves[0].getPoint(ringProg, tempPulseVector);
+        ringRef.current.position.copy(tempPulseVector);
         ringRef.current.scale.setScalar(1 + Math.sin(t * Math.PI) * 0.5);
       } else {
         ringRef.current.visible = false;
